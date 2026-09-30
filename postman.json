@@ -1,0 +1,181 @@
+{
+  "info": {
+    "name": "Credit Card Full-Stack API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Authentication (Django)",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"admin\",\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/auth/register/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "auth", "register", ""]
+            }
+          }
+        },
+        {
+          "name": "Obtain JWT Token (Login)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/auth/token/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "auth", "token", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Payments & Transactions (Django -> FastAPI)",
+      "item": [
+        {
+          "name": "Process Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer "
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"card_number\": \"4242424242424242\",\n    \"expiry_month\": \"12\",\n    \"expiry_year\": \"28\",\n    \"cvv\": \"123\",\n    \"amount\": 150.00,\n    \"currency\": \"USD\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/payments/process/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "payments", "process", ""]
+            }
+          }
+        },
+        {
+          "name": "Get User Transaction History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer "
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8000/api/payments/transactions/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "payments", "transactions", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Admin Analytics",
+      "item": [
+        {
+          "name": "Admin Daily Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer "
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8000/api/payments/admin/summary/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "payments", "admin", "summary", ""]
+            }
+          }
+        },
+        {
+          "name": "Admin All Transactions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer "
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8000/api/payments/admin/transactions/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "payments", "admin", "transactions", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Direct FastAPI Engine",
+      "item": [
+        {
+          "name": "Direct FastAPI Process (Bypassing Django)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"card_number\": \"4242424242424242\",\n    \"expiry_month\": \"12\",\n    \"expiry_year\": \"28\",\n    \"cvv\": \"123\",\n    \"amount\": 250.00,\n    \"currency\": \"USD\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8001/api/payments/process",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8001",
+              "path": ["api", "payments", "process"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
