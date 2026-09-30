@@ -1,8 +1,14 @@
+import os
 import uuid
 import datetime
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from .schemas import PaymentRequest, PaymentResponse
+from schemas import PaymentRequest, PaymentResponse
+from dotenv import load_dotenv
+
+load_dotenv()
+
+origins = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
 
 app = FastAPI(
     title="Payment Processing Service",
@@ -12,9 +18,9 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["POST", "GET", "OPTIONS"],
     allow_headers=["*"],
 )
 

@@ -33,8 +33,13 @@ class CardSerializer(serializers.ModelSerializer):
     
     def validate_cvv(self, value):
         cleaned_cvv = re.sub(r'\D', '', value)
+
         if len(cleaned_cvv) not in (3, 4):
-            raise serializers.ValidationError("CVV must be 3 or 4 digits.")
+            raise serializers.ValidationError(
+                "CVV must be 3 or 4 digits."
+            )
+
+        return cleaned_cvv
         
     def validate(self, attrs):
         exp_month = attrs.get('exp_month')

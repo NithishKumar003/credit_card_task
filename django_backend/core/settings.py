@@ -25,13 +25,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-1bn+9ma=l+8u#mux#r+j89db@6qq@^!h9c8pia+nvy@)07h^1_'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     'accounts',
     'cards',
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -86,8 +88,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.getenv('DB_NAME', 'payment_system_db'),
         'USER': os.getenv('DB_USER', 'root'),
-        'PASSWORD': os.getenv('DB_PASSWORD', ''),
-        'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'root'),
+        'HOST': os.environ.get('DB_HOST', 'db'),
         'PORT': os.getenv('DB_PORT', '3306')
     }
 }
@@ -157,3 +159,24 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_DOWNFALL': False,
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+
+# CORS configuration
+CORS_ALLOW_ALL_ORGINS = True
+CORS_ALLOW_CREDENTIALS =True
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]

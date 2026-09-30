@@ -21,3 +21,8 @@ class CardDetailDeleteView(generics.RetrieveDestroyAPIView):
     
     def get_queryset(self):
         return Card.objects.filter(user=self.request.user)
+    
+class AdminCardListView(generics.ListAPIView):
+    permission_classes = [permissions.IsAdminUser]
+    serializer_class = CardSerializer
+    queryset = Card.objects.all().order_by('-created_at')

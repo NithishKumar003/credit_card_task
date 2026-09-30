@@ -1,0 +1,54 @@
+services:
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: credit_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: payment_system_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  # Django Auth & Vault Service
+  django_backend:
+    build: ./django_backend 
+    container_name: credit_card_django
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=payment_system_db
+      - FASTAPI_URL=http://fastapi_engine:8001
+    depends_on:
+      - db
+    command: >
+      bash -c "sleep 10 && 
+               python manage.py migrate && 
+               python manage.py runserver 0.0.0.0:8000"
+
+  # FastAPI Transaction Engine
+  fastapi_engine:
+    build: ./fastapI_service  
+    container_name: credit_card_fastapi
+    ports:
+      - "8001:8001"
+
+  # React / Vite Frontend
+  frontend:
+    build: ./frontend
+    container_name: credit_card_frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000/api
+      - VITE_FASTAPI_BASE_URL=http://localhost:8001/api
+    depends_on:
+      - django_backend
+      - fastapi_engine
+
+volumes:
+  mysql_data:

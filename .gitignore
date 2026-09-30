@@ -19,3 +19,6 @@ build/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Docker
+*.log
