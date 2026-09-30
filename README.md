@@ -289,6 +289,7 @@ credit_card_task/
 │   └── Dockerfile
 │
 ├── docker-compose.yml
+├── screenshots
 └── README.md
 ```
 
